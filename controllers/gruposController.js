@@ -85,3 +85,30 @@ exports.crearGrupo = async (req, res) => {
         res.redirect('/nuevo-grupo');
     }
 }
+
+//editar grupo
+exports.formEditarGrupo = async (req, res) => {
+    const grupo = await Grupos.findByPk(req.params.grupoId);
+    const categorias = await Categorias.findAll();
+
+    res.render('editar-grupo', {
+        nombrePagina: `Editar Grupo: ${grupo.nombre}`,
+        grupo,
+        categorias
+    })
+    
+    /* funciona este codigo pero en la bd se llama igual los datos entonces no se sabe cual especificar
+    const consultas = [];
+    consultas.push(Grupos.findByPk(req.params.grupoId));
+    consultas.push(Categorias.findAll());
+
+    //Promise con awai 
+    const {grupo, categorias} = await Promise.all(consultas);
+
+    res.render('editar-grupo', {
+        nombrePagina: `Editar Grupo: ${grupo.nombre}`,
+        grupo,
+        categorias
+    })
+    */
+}
