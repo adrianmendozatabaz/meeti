@@ -17,6 +17,8 @@ require('dotenv').config({path: 'variables.env'});
 //db configuracion
 const db = require('./config/db');
 require('./models/Usuarios');
+require('./models/Categorias');
+require('./models/Grupos');
 db.sync().then(() => console.log('DB conectada')).catch((error) => console.log(error));
 
 //donde corre la app
