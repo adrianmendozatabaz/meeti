@@ -37,7 +37,7 @@ function buscarDireccion(e) {
 
             geocodeService.reverse().latlng(resultado[0].bounds[0], 15).run(function (error, result) {
 
-                console.log(result);
+                llenarInputs(result)
 
                 //mostrar el mapa 
                 map.setView(resultado[0].bounds[0], 15);
@@ -62,6 +62,7 @@ function buscarDireccion(e) {
 
                     //reverse geocoding, cuando el usuario rehubica el pin
                     geocodeService.reverse().latlng(posicion, 15).run(function (error, result) {
+                        llenarInputs(result);
                         //asigna los valores al popup del marker
                         marker.bindPopup(result.address.LongLabel);
                     });
@@ -69,6 +70,15 @@ function buscarDireccion(e) {
             })
         })
     }
+}
+
+function llenarInputs(resultado){
+    document.querySelector('#direccion').value = resultado.address.Address || ''; 
+    document.querySelector('#ciudad').value = resultado.address.City || '';   
+    document.querySelector('#estado').value = resultado.address.Region || '';   
+    document.querySelector('#pais').value = resultado.address.CountryCode || '';   
+    document.querySelector('#lat').value = resultado.latlng.lat || '';   
+    document.querySelector('#lng').value = resultado.latlng.lng || '';   
 }
 
 /*
