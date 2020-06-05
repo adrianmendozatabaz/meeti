@@ -10,6 +10,7 @@ const Usuarios = db.define('usuarios', {
     },
     nombre: Sequelize.STRING(60),
     imagen: Sequelize.STRING(60),
+    descripcion: Sequelize.TEXT,
     email: {
         type: Sequelize.STRING(40),
         allowNull: false,

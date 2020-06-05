@@ -93,3 +93,42 @@ exports.formIniciarSesion = (req, res) => {
         nombrePagina: 'Iniciar Sesión'
     });
 }
+
+
+//Muestra el formulario para editar perfil
+exports.formEditarPerfil = async (req, res) =>{
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    res.render('editar-perfil', {
+        nombrePagina: `Editar Perfil`,
+        usuario
+    })
+}
+
+//almacena en la bd los cambios al perfil
+exports.editarPerfil = async (req, res) =>{
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    body('nombre').trim().escape();
+    body('email').trim().escape();
+
+    //leer datos del form
+    const {nombre, descripcion, email} = req.body;
+
+    //asignar los valores
+    usuario.nombre = nombre;
+    usuario.descripcion = descripcion;
+    usuario.email = email;
+
+    //almacenar en la bd
+    await usuario.save();
+    req.flash('exito', 'Cambios Guardados Correctamente');
+    res.redirect('/administracion');
+}
+
+//form para cambiar el password
+exports.formCambiarPassword = (req, res) =>{
+    res.render('cambiar-password',{
+        nombrePagina: 'Cambiar Password'
+    })
+}
