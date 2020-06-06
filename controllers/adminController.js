@@ -22,7 +22,10 @@ exports.panelAdministracion = async (req, res) => {
             fecha: {
                 [Op.gte] : moment(new Date()).format('YYYY-MM-DD')
             }
-        }
+        },
+        order: [
+            ['fecha', 'ASC']
+        ]
     }));
     consultas.push(Meeti.findAll({
         where: {

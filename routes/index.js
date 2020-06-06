@@ -12,6 +12,7 @@ const meetiController = require('../controllers/meetiController');
 
 module.exports = function () {
 
+    /* AREA PUBLICA */
     //para el inicio
     router.get('/', homeController.home);
 
@@ -30,7 +31,7 @@ module.exports = function () {
         authController.cerrarSesion
     );
 
-
+    /* AREA PRIVADA */
     /* Panel de administracion */
     router.get('/administracion',
         authController.usuarioAutenticado,
