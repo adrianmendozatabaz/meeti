@@ -409,6 +409,11 @@ trix-editor h1 {
   align-self: flex-start;
   padding-top: 4rem;
 }
+
+.descripcion div{
+  line-height: 2;
+}
+
 trix-toolbar,
 trix-editor {
   background-color: white !important;
