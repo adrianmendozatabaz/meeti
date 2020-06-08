@@ -1,6 +1,7 @@
 import {
     OpenStreetMapProvider
 } from 'leaflet-geosearch';
+import asistencia from './asistencia';
 
 const lat = document.querySelector('#lat').value || 20.1392128;
 const lng = document.querySelector('#lng').value || -98.74636799999999;
