@@ -7,6 +7,7 @@ const Meeti = require('../../models/Meeti');
 const Grupos = require('../../models/Grupos');
 const Usuarios = require('../../models/Usuarios');
 const Categorias = require('../../models/Categorias');
+const Comentarios = require('../../models/Comentarios');
 
 
 exports.mostrarMeeti = async (req, res) => {
@@ -23,16 +24,29 @@ exports.mostrarMeeti = async (req, res) => {
             }
         ]
     })
+
     //Si no existe
     if (!meeti) {
         res.redirect('/');
     }
 
+    //consultar despues de verificar si existe el meeti
+    const comentarios = await Comentarios.findAll({
+        where: {
+            meetiId: meeti.id
+        },
+        include: [{
+            model: Usuarios,
+            attributes: ['id', 'nombre', 'imagen']
+        }]
+    })
+
     //pasar la consulta a la pagina
     res.render('mostrar-meeti', {
         nombrePagina: meeti.titulo,
         meeti,
-        moment
+        moment,
+        comentarios
     })
 }
 
@@ -70,7 +84,7 @@ exports.confirmarAsistencia = async (req, res) => {
 }
 
 //muestra los asistentes de un meeti
-exports.mostrarAsistentes = async (req, res) =>{
+exports.mostrarAsistentes = async (req, res) => {
     const meeti = await Meeti.findOne({
         where: {
             slug: req.params.slug
@@ -78,7 +92,9 @@ exports.mostrarAsistentes = async (req, res) =>{
         attributes: ['interesado']
     })
 
-    const {interesado} = meeti;
+    const {
+        interesado
+    } = meeti;
 
     const asistentes = await Usuarios.findAll({
         attributes: ['nombre', 'imagen'],
@@ -88,14 +104,14 @@ exports.mostrarAsistentes = async (req, res) =>{
     })
 
     //pasar datos a la vista
-    res.render('asistentes',{
+    res.render('asistentes', {
         nombrePagina: 'Listado de Asistentes',
         asistentes
     })
 }
 
 //muestra los meetis agrupados por categoria
-exports.mostrarCategoria = async (req, res, next) =>{
+exports.mostrarCategoria = async (req, res, next) => {
     const categoria = await Categorias.findOne({
         where: {
             slug: req.params.categoria
@@ -108,10 +124,9 @@ exports.mostrarCategoria = async (req, res, next) =>{
             ['fecha', 'ASC'],
             ['hora', 'ASC']
         ],
-        include: [
-            {
+        include: [{
                 model: Grupos,
-                where:{
+                where: {
                     categoriaId: categoria.id
                 }
             },
@@ -121,7 +136,7 @@ exports.mostrarCategoria = async (req, res, next) =>{
         ]
     });
 
-    res.render('categoria',{
+    res.render('categoria', {
         nombrePagina: `Categoria: ${categoria.nombre}`,
         meetis,
         moment

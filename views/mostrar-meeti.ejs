@@ -12,7 +12,7 @@
                     <p>Organizado por:</p>
                     <p class="autor">
                         <a href="/usuarios/<%= meeti.usuario.id %>"><%= meeti.usuario.nombre %></a> Creador de:
-                        <a href="/grupos/<%=meeti.grupo.id %>"><%= meeti.grupo.nombre %></a>
+                        <a href="/grupos/<%= meeti.grupo.id %>"><%= meeti.grupo.nombre %></a>
                     </p>
                 </div>
             </div>
@@ -63,36 +63,49 @@
 
             <div class="comentarios">
                 <h2>Comentarios</h2>
-                <div class="comentario">
-                    <div class="imagen">
-                    </div>
-                    <div class="texto">
-                        <p>hola</p>
-                        <p>Escrito por: <span>Adrian Mendoza</span></p>
-                        <input type="button" value="Eliminar" class="btn btn-azul">
-                    </div>
-                </div>
-                <div class="comentario">
-                    <div class="imagen">
-                    </div>
-                    <div class="texto">
-                        <p>hola</p>
-                        <p>Escrito por: <span>Adrian Mendoza</span></p>
-                    </div>
-                </div>
+                <% if(comentarios.length > 0){ %> 
+                    <% comentarios.forEach(comentario =>{ %> 
+                        <div class="comentario">
+                            <div class="imagen">
+                                <% if(comentario.usuario.imagen){ %> 
+                                    <img src="/uploads/perfiles/<%= comentario.usuario.imagen %>">
+                                <% } %> 
+                            </div>
+                            <div class="texto">
+                                <p><%= comentario.mensaje %> </p>
+                                <p>Escrito por: 
+                                    <a href="/usuarios/<%= comentario.usuario.id %>">
+                                        <%= comentario.usuario.nombre %> 
+                                    </a> 
+                                </p>
+                                <% if(comentario.usuario.id === usuario.id){ %>
+                                    <form action="/eliminar-comentario" method="POST" class="eliminar-comentario">
+                                        <input type="hidden" name="idComentario" value="<%= comentario.id %> ">
+                                        <input type="submit" value="Eliminar" class="btn btn-azul">
+                                    </form>
+                                <% } %> 
+                            </div>
+                        </div>
+                    <% }) %> 
+                <% } else{ %>
+                    <p class="text-center">¡Aún no hay comentarios!</p>
+                <% } %>  
 
-                <form action="#" class="default-form comentarios">
-                    <legend>Agrega un comentario</legend>
-                    <div class="campo">
-                        <label for="comentario">Comentario</label>
-                        <textarea name="comentario"></textarea>
-                    </div>
-                    <div class="campo enviar">
-                        <input type="submit" class="btn btn-rosa" value="Enviar">
-                    </div>
-                </form>
+                <% if(usuario.id){ %> 
+                    <form action="/meeti/<%= meeti.id %> " class="default-form comentarios" method="POST">
+                        <legend>Agrega un comentario</legend>
+                        <div class="campo">
+                            <label for="comentario">Comentario</label>
+                            <textarea name="comentario"></textarea>
+                        </div>
+                        <div class="campo enviar">
+                            <input type="submit" class="btn btn-rosa" value="Enviar">
+                        </div>
+                    </form>
                 <!-- /. form comentarios-->
-
+                <% } else{ %>
+                    <p class="text-center">Inicia sesión para acceder a los comentarios</p>
+                <% } %>  
 
             </div>
             <!-- Comentarios -->
