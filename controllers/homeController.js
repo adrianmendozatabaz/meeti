@@ -41,7 +41,7 @@ exports.home = async (req, res) => {
     //extraer y pasar a la vista
     const [categorias, meetis] = await Promise.all(consultas);
 
-    console.log(meetis);
+    //console.log(meetis);
     
 
     res.render('home', {
